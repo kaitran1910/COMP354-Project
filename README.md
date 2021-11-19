@@ -20,5 +20,6 @@ Partition of the Final Project:
     + Contribution list
     + Schedule to keep up with the deadline
     + Risk analysis
-    + Testing case
+    + Testing case (user case scenario diagrams)
+    + How we handling _low cohesion high coupling_
 - Demo (10%)
