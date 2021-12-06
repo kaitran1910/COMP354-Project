@@ -20,6 +20,7 @@ public class JavaCalculator extends JFrame {
     private JButton jbtSubtract;
     private JButton jbtMultiply;
     private JButton jbtDivide;
+    private JButton jbtDec;
     private JButton jbtSolve;
     private JButton jbtClear;
     private double TEMP;
@@ -30,6 +31,12 @@ public class JavaCalculator extends JFrame {
     Boolean subBool = false;
     Boolean divBool = false;
     Boolean mulBool = false;
+    Boolean operator = false;
+    Boolean error = false;
+    
+    String tooLong = "Error! Number is to large to display";
+    String syntaxError = "Syntax Error!.";
+    String divZero = "Error! Division by Zero.";
 
     String display = "";
 
@@ -47,6 +54,7 @@ public class JavaCalculator extends JFrame {
         p1.add(jbtNum8 = new JButton("8"));
         p1.add(jbtNum9 = new JButton("9"));
         p1.add(jbtNum0 = new JButton("0"));
+        p1.add(jbtDec = new JButton("."));
         p1.add(jbtClear = new JButton("C"));
 
         JPanel p2 = new JPanel();
@@ -81,6 +89,7 @@ public class JavaCalculator extends JFrame {
         jbtNum8.addActionListener(new ListenToEight());
         jbtNum9.addActionListener(new ListenToNine());
         jbtNum0.addActionListener(new ListenToZero());
+        jbtDec.addActionListener(new ListenToDecimal());
 
         jbtAdd.addActionListener(new ListenToAdd());
         jbtSubtract.addActionListener(new ListenToSubtract());
@@ -98,6 +107,7 @@ public class JavaCalculator extends JFrame {
             subBool = false;
             mulBool = false;
             divBool = false;
+            operator = false;
 
             TEMP = 0;
             SolveTEMP = 0;
@@ -106,123 +116,187 @@ public class JavaCalculator extends JFrame {
 
     class ListenToOne implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "1");
+        	DisplayNumber("1");
         }
     }
 
     class ListenToTwo implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "2");
+        	DisplayNumber("2");
         }
     }
 
     class ListenToThree implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "3");
+        	DisplayNumber("3");
         }
     }
 
     class ListenToFour implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "4");
+        	DisplayNumber("4");
         }
     }
 
     class ListenToFive implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "5");
+            DisplayNumber("5");
         }
     }
 
     class ListenToSix implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "6");
+        	DisplayNumber("6");
         }
     }
 
     class ListenToSeven implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "7");
+        	DisplayNumber("7");
         }
     }
 
     class ListenToEight implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "8");
+        	DisplayNumber("8");
         }
     }
 
     class ListenToNine implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "9");
+        	DisplayNumber("9");
         }
     }
 
     class ListenToZero implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            display = jtfResult.getText();
-            jtfResult.setText(display + "0");
+        	DisplayNumber("0");
         }
+    }
+
+    class ListenToDecimal implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+        	DisplayNumber(".");
+        }
+    }
+    
+    public void DisplayNumber(String s) {
+    	try {
+    		if(error) {
+    			error = false;
+    			display = "";
+    		}
+    		else {
+        		display = jtfResult.getText();
+    		}
+    		
+    		if(display.length() >= 15) {
+    			error = true;
+    			throw new LargeNumException();
+    		}
+    		
+    		jtfResult.setText(display + s);
+    	}
+    	catch(Exception ex) {
+        	error = true; 
+        	jtfResult.setText(ex.toString());
+    	}
     }
 
     class ListenToAdd implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            TEMP = Double.parseDouble(jtfResult.getText());
-            jtfResult.setText("");
-            addBool = true;
+        	try {
+        		SaveOperand();
+                operator = addBool = true;
+        	}
+        	catch(Exception ex) {
+            	error = true; 
+            	jtfResult.setText(ex.toString());
+        	}
         }
     }
 
     class ListenToSubtract implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            TEMP = Double.parseDouble(jtfResult.getText());
-            jtfResult.setText("");
-            subBool = true;
+        	try {
+        		SaveOperand();
+	            operator = subBool = true;
+        	}
+        	catch(Exception ex) {
+            	error = true; jtfResult.setText(ex.toString());
+        	}
         }
     }
 
     class ListenToMultiply implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            TEMP = Double.parseDouble(jtfResult.getText());
-            jtfResult.setText("");
-            mulBool = true;
+        	try {
+        		SaveOperand();
+	            operator = mulBool = true;
+        	}
+        	catch(Exception ex) {
+            	error = true; jtfResult.setText(ex.toString());
+        	}
         }
     }
 
     class ListenToDivide implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            TEMP = Double.parseDouble(jtfResult.getText());
-            jtfResult.setText("");
-            divBool = true;
+        	try {
+        		SaveOperand();
+	            operator = divBool = true;
+        	}
+        	catch(Exception ex) {
+            	error = true; jtfResult.setText(ex.toString());
+        	}
         }
+    }
+    
+    public void SaveOperand() {
+    	display = jtfResult.getText();
+    	if(operator || error || display == "." || display.charAt(display.length()-1) == '.'|| display.charAt(0) == '.') {
+    		operator = false;
+    		throw new SyntaxErrorException();
+    	}
+        TEMP = Double.parseDouble(jtfResult.getText());
+        jtfResult.setText("");
     }
 
     class ListenToSolve implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            SolveTEMP = Double.parseDouble(jtfResult.getText());
-            if (addBool == true)
-                SolveTEMP = SolveTEMP + TEMP;
-            else if ( subBool == true)
-                SolveTEMP = SolveTEMP - TEMP;
-            else if ( mulBool == true)
-                SolveTEMP = SolveTEMP * TEMP;
-            else if ( divBool == true)
-                            SolveTEMP = SolveTEMP / TEMP;
-            jtfResult.setText(  Double.toString(SolveTEMP));
-
+        	try {
+        		display = jtfResult.getText();
+            	if( error || display == "." || display.charAt(display.length()-1) == '.'|| display.charAt(0) == '.') {
+            		throw new SyntaxErrorException();
+            	}
+	        	
+	        	SolveTEMP = Double.parseDouble(display);
+	        	
+            	if(divBool && SolveTEMP == 0) {
+            		throw new ZeroDivisionException();
+            	}
+	        	
+	            if (addBool)
+	                SolveTEMP = SolveTEMP + TEMP;
+	            else if ( subBool )
+	                SolveTEMP = SolveTEMP - TEMP;
+	            else if ( mulBool )
+	                SolveTEMP = SolveTEMP * TEMP;
+	            else if ( divBool )
+	                            SolveTEMP = TEMP / SolveTEMP;
+	            jtfResult.setText(  Double.toString(SolveTEMP));
+            
+        	}
+        	catch(Exception ex) {
+            	error = true; 
+            	jtfResult.setText(ex.toString());
+        	}
+        	
             addBool = false;
             subBool = false;
             mulBool = false;
             divBool = false;
+            operator = false;
         }
     }
 
